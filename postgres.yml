@@ -1,0 +1,23 @@
+- name: Install & Run Postgres
+  hosts: postgres
+  become: True
+  tasks:
+    - name: Add Postgres apt Key
+      apt_key:
+        url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
+        state: present
+
+    - name: Add Postgres Repository
+      apt_repository:
+        repo: deb https://apt.postgresql.org/pub/repos/apt noble-pgdg main
+        state: present
+
+    - name: Install Postgres server
+      package:
+          name: postgresql
+          state: present
+
+    - name: Start Postgres service
+      ansible.builtin.service:
+          name: postgresql
+          state: started
